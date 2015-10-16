@@ -49,8 +49,8 @@ public class Model {
 	 * Periodicity of walker appearance. 
 	 */
 	public final static int newWalkerDelay = 20;
-
-	private Walker[][] map = new Walker[maxOX][maxOY];
+	
+	private Walker[][] map = new Walker[maxOX + 1][maxOY + 1];
 	private Random random = new Random();
 
 	private int turn = 0;
