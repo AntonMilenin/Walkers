@@ -83,6 +83,11 @@ public class Model {
 	 */
 	public final static int bottleLossCahnce = 30;
 
+	/**
+	 * Radius of lamps' illumination
+	 */
+	public final static int lightRadius = 3;
+
 	private MapObject[][] map;
 	private Random random = new Random();
 	private int turn = 0;
@@ -113,7 +118,7 @@ public class Model {
 				Walker walker = iterator.next();
 				walker.move();
 				if (walker.getState() == WalkerState.ASLEEP || walker.getState() == WalkerState.LYING) {
-					if (Math.abs(walker.getOX() - lampOx) + Math.abs(walker.getOY() - lampOy) <= 3)
+					if (Math.abs(walker.getOX() - lampOx) + Math.abs(walker.getOY() - lampOy) <= lightRadius)
 						illuminatedWalkers.add(walker);
 					iterator.remove();
 				}
