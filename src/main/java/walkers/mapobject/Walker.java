@@ -11,7 +11,6 @@ import walkers.Model;
  */
 public class Walker implements MapObject {
 	private boolean hasBottle = true;
-	private int sllepingTime = 0;
 	private int oX, oY;
 	private WalkerState state = WalkerState.AT_START;
 	private MapObject[][] map;
@@ -36,11 +35,6 @@ public class Walker implements MapObject {
 	 */
 	public void move() {
 		switch (state) {
-		case ASLEEP:
-			sllepingTime--;
-			if (sllepingTime == 0)
-				state = WalkerState.WALKING;
-			break;
 		case AT_START:
 			if (map[Model.pubOx][0] == null) {
 				map[Model.pubOx][0] = this;
@@ -182,14 +176,13 @@ public class Walker implements MapObject {
 		} else {
 			switch (map[newOX][newOY].getMapToken()) {
 			case 'Z':
-				state = WalkerState.ASLLEP_FOREWER;
+				state = WalkerState.ASLEEP;
 				break;
 			case 'D':
 			case '&':
 				break;
 			case 'C':
 				state = WalkerState.ASLEEP;
-				sllepingTime = Model.sleepingTime;
 				break;
 			case 'B':
 				state = WalkerState.LYING;
@@ -202,7 +195,6 @@ public class Walker implements MapObject {
 	public char getMapToken() {
 		switch (state){
 		case ASLEEP:
-		case ASLLEP_FOREWER: 
 			return 'Z';
 		case LYING:
 			return '&';			

@@ -86,7 +86,7 @@ public class Model {
 			while (iterator.hasNext()) {
 				Walker walker = iterator.next();
 				walker.move();
-				if (walker.getState() == WalkerState.ASLLEP_FOREWER)
+				if (walker.getState() == WalkerState.ASLEEP || walker.getState() == WalkerState.LYING)
 					iterator.remove();
 			}
 			drawMap();

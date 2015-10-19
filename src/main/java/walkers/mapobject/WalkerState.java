@@ -6,5 +6,5 @@ package walkers.mapobject;
  * @author Anton Milenin
  */
 public enum WalkerState {
-	ASLEEP, ASLLEP_FOREWER, AT_START, WALKING, LYING
+	ASLEEP, AT_START, WALKING, LYING
 }
