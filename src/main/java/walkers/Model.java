@@ -36,25 +36,31 @@ public class Model {
 	public final static int postOY = 7;
 
 	/**
-	 * Number of turns for walker to sleep after running into a post. 
+	 * Number of turns for walker to sleep after running into a post.
 	 */
 	public final static int sleepingTime = 5;
 
 	/**
-	 * oX coordinate of the pub. 
+	 * oX coordinate of the pub.
 	 */
 	public final static int pubOx = 9; // we assume that pubOy == -1 to not
 										// spoil Walker implementation by
 										// excessive generalization
 	/**
-	 * Number of turns of simulation. 
+	 * Number of turns of simulation.
 	 */
 	public final static int finalTurn = 500;
 	/**
-	 * Periodicity of walker appearance. 
+	 * Periodicity of walker appearance.
 	 */
 	public final static int newWalkerDelay = 20;
-	
+
+	/**
+	 * This value corresponds to chance to loose a bottle. Actual chance is
+	 * 1/this value.
+	 */
+	public final static int bottleLossCahnce = 30;
+
 	private MapObject[][] map;
 	private Random random = new Random();
 	private int turn = 0;
@@ -63,15 +69,15 @@ public class Model {
 	/**
 	 * Class constructor.
 	 */
-	public Model(){
+	public Model() {
 		map = new MapObject[maxOX + 1][maxOY + 1];
 		map[postOX][postOY] = new Post();
 	}
-		
+
 	/**
 	 * Simulates walkers behavior.
 	 */
-	public void simulate() {		
+	public void simulate() {
 		while (turn < finalTurn) {
 			if ((turn % newWalkerDelay) == 0) {
 				activeWalkers.add(new Walker(map, random));

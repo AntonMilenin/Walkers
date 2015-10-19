@@ -10,6 +10,7 @@ import walkers.Model;
  * @author Anton Milenin
  */
 public class Walker implements MapObject {
+	private boolean hasBottle = true;
 	private int sllepingTime = 0;
 	private int oX, oY;
 	private WalkerState state = WalkerState.AT_START;
@@ -39,8 +40,6 @@ public class Walker implements MapObject {
 			sllepingTime--;
 			if (sllepingTime == 0)
 				state = WalkerState.WALKING;
-			break;
-		case ASLLEP_FOREWER:
 			break;
 		case AT_START:
 			if (map[Model.pubOx][0] == null) {
@@ -147,6 +146,9 @@ public class Walker implements MapObject {
 					tryToMove(oX - 1, oY);
 				}
 			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -169,7 +171,12 @@ public class Walker implements MapObject {
 	private void tryToMove(int newOX, int newOY) {
 		if (map[newOX][newOY] == null) {
 			map[newOX][newOY] = this;
-			map[oX][oY] = null;
+			if (hasBottle && random.nextInt(Model.bottleLossCahnce) == 0) {
+				map[oX][oY] = new Bottle();
+				hasBottle = false;
+			} else {
+				map[oX][oY] = null;
+			}
 			oX = newOX;
 			oY = newOY;
 		} else {
@@ -178,21 +185,29 @@ public class Walker implements MapObject {
 				state = WalkerState.ASLLEP_FOREWER;
 				break;
 			case 'D':
+			case '&':
 				break;
 			case 'C':
 				state = WalkerState.ASLEEP;
 				sllepingTime = Model.sleepingTime;
+				break;
+			case 'B':
+				state = WalkerState.LYING;
+				break;
 			}
 		}
 	}
 
 	@Override
 	public char getMapToken() {
-		if (state == WalkerState.ASLEEP || state == WalkerState.ASLLEP_FOREWER) {
+		switch (state){
+		case ASLEEP:
+		case ASLLEP_FOREWER: 
 			return 'Z';
-		} else {
+		case LYING:
+			return '&';			
+		default:
 			return 'D';
 		}
 	}
-
 }
