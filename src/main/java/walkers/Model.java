@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import walkers.mapobject.MapObject;
+import walkers.mapobject.Post;
+import walkers.mapobject.Walker;
+import walkers.mapobject.WalkerState;
+
 /**
  * This class models field with walkers, post and pub. It also contains global
  * setup variables.
@@ -50,16 +55,23 @@ public class Model {
 	 */
 	public final static int newWalkerDelay = 20;
 	
-	private Walker[][] map = new Walker[maxOX + 1][maxOY + 1];
+	private MapObject[][] map;
 	private Random random = new Random();
-
 	private int turn = 0;
 	private List<Walker> activeWalkers = new ArrayList<>();
 
 	/**
+	 * Class constructor.
+	 */
+	public Model(){
+		map = new MapObject[maxOX + 1][maxOY + 1];
+		map[postOX][postOY] = new Post();
+	}
+		
+	/**
 	 * Simulates walkers behavior.
 	 */
-	public void simulate() {
+	public void simulate() {		
 		while (turn < finalTurn) {
 			if ((turn % newWalkerDelay) == 0) {
 				activeWalkers.add(new Walker(map, random));
@@ -87,14 +99,10 @@ public class Model {
 		System.out.println("");
 		for (int y = 0; y <= maxOY; y++) {
 			for (int x = 0; x <= maxOX; x++) {
-				if (x == postOX && y == postOY) {
-					System.out.print("C");
-				} else if (map[x][y] == null) {
-					System.out.print(".");
-				} else if (map[x][y].getState() == WalkerState.WALKING) {
-					System.out.print("D");
+				if (map[x][y] == null) {
+					System.out.print('.');
 				} else {
-					System.out.print("Z");
+					System.out.print(map[x][y].getMapToken());
 				}
 			}
 			System.out.println("");

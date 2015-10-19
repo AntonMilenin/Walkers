@@ -1,4 +1,4 @@
-package walkers;
+package walkers.mapobject;
 
 /**
  * This enum describes walkers' state.

@@ -1,17 +1,19 @@
-package walkers;
+package walkers.mapobject;
 
 import java.util.Random;
+
+import walkers.Model;
 
 /**
  * This class simulates walker behavior.
  * 
  * @author Anton Milenin
  */
-public class Walker {
+public class Walker implements MapObject {
 	private int sllepingTime = 0;
 	private int oX, oY;
 	private WalkerState state = WalkerState.AT_START;
-	private Walker[][] map;
+	private MapObject[][] map;
 	private Random random;
 
 	/**
@@ -23,7 +25,7 @@ public class Walker {
 	 *            randomizer that we to have opportunity to control random
 	 *            output via randomizer seeds
 	 */
-	Walker(Walker[][] map, Random random) {
+	public Walker(MapObject[][] map, Random random) {
 		this.map = map;
 		this.random = random;
 	}
@@ -159,22 +161,37 @@ public class Walker {
 	/**
 	 * This method is called to to move walker to corresponding position.
 	 * 
-	 * @param newOX new oX coordinate 
-	 * @param newOY new oY coordinate 
+	 * @param newOX
+	 *            new oX coordinate
+	 * @param newOY
+	 *            new oY coordinate
 	 */
 	private void tryToMove(int newOX, int newOY) {
-		if (newOX == Model.postOX && newOY == Model.postOY) {
-			state = WalkerState.ASLEEP;
-			sllepingTime = Model.sleepingTime;
-		} else if (map[newOX][newOY] != null) {
-			WalkerState targetState = map[newOX][newOY].state;
-			if (targetState == WalkerState.ASLEEP || targetState == WalkerState.ASLLEP_FOREWER)
-				state = WalkerState.ASLLEP_FOREWER;
-		} else {
+		if (map[newOX][newOY] == null) {
 			map[newOX][newOY] = this;
 			map[oX][oY] = null;
 			oX = newOX;
 			oY = newOY;
+		} else {
+			switch (map[newOX][newOY].getMapToken()) {
+			case 'Z':
+				state = WalkerState.ASLLEP_FOREWER;
+				break;
+			case 'D':
+				break;
+			case 'C':
+				state = WalkerState.ASLEEP;
+				sllepingTime = Model.sleepingTime;
+			}
+		}
+	}
+
+	@Override
+	public char getMapToken() {
+		if (state == WalkerState.ASLEEP || state == WalkerState.ASLLEP_FOREWER) {
+			return 'Z';
+		} else {
+			return 'D';
 		}
 	}
 
