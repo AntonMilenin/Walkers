@@ -9,30 +9,26 @@ import walkers.Model;
  * 
  * @author Anton Milenin
  */
-public class Walker implements MapObject {
+public class Walker extends Person implements MapObject {
 	private boolean hasBottle = true;
-	private int oX, oY;
 	private WalkerState state = WalkerState.AT_START;
-	private MapObject[][] map;
 	private Random random;
 
 	/**
 	 * Class constructor
 	 * 
 	 * @param map
-	 *            array that shows positions of all walkers on the field
+	 *            array that shows positions of all objects on the field
 	 * @param random
 	 *            randomizer that we to have opportunity to control random
 	 *            output via randomizer seeds
 	 */
 	public Walker(MapObject[][] map, Random random) {
-		this.map = map;
+		super(map);
 		this.random = random;
 	}
 
-	/**
-	 * This method is called to simulate walkers' movement.
-	 */
+	@Override
 	public void move() {
 		switch (state) {
 		case AT_START:
